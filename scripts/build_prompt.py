@@ -23,6 +23,7 @@ SLOT_LABELS = {
     "constraints": "约束",
     "format": "格式",
     "acceptance": "验收",
+    "realdata": "真实数据",
 }
 
 
@@ -55,6 +56,13 @@ def render_prompt(data: dict) -> str:
         blocks.append(f"【格式】\n{str(data['format']).strip()}")
     if data.get("acceptance"):
         blocks.append(f"【验收】\n{str(data['acceptance']).strip()}")
+    realdata = data.get("realdata")
+    if isinstance(realdata, list):
+        lines = "\n".join(f"{i}. {str(c).strip()}" for i, c in enumerate(realdata, 1) if str(c).strip())
+        if lines:
+            blocks.append(f"【真实数据】\n{lines}")
+    elif isinstance(realdata, str) and realdata.strip():
+        blocks.append(f"【真实数据】\n{realdata.strip()}")
     return "\n\n".join(blocks)
 
 
